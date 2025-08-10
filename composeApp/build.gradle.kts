@@ -42,6 +42,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(project(":data:dog"))
+            implementation(project(":domain:dog"))
+            implementation(project(":feature:dog"))
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
