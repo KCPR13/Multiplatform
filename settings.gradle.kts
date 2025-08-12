@@ -29,8 +29,6 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-include(":data:dog")
-include(":data:cat")
-include(":domain:dog")
-include(":domain:cat")
-include(":feature:dog")
+include(":data")
+include(":domain")
+include(":ui")
