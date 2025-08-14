@@ -8,8 +8,7 @@ import platform.Foundation.NSHomeDirectory
 fun getAppDatabase(): AppRoom {
     val dbFile = NSHomeDirectory() + DATABASE_NAME
     return Room.databaseBuilder<AppRoom>(
-        name = dbFile,
-        factory = { AppRoom::class.instantiateImpl() }
+        name = dbFile
     )
         .setDriver(BundledSQLiteDriver())
         .build()

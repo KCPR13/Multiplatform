@@ -55,6 +55,7 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.coroutines.core)
+                implementation(project.dependencies.platform(libs.koin.bom))
                 implementation(libs.koin.core)
                 // Add KMP dependencies here
             }
