@@ -1,10 +1,27 @@
 package pl.kacper.misterski.multiplatform.data.di
 
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+import pl.kacper.misterski.multiplatform.data.db.AppRoom
+import pl.kacper.misterski.multiplatform.data.db.dog.DogDao
+import pl.kacper.misterski.multiplatform.data.db.getAppDatabase
+import pl.kacper.misterski.multiplatform.data.repository.DogRepositoryImpl
+import pl.kacper.misterski.multiplatform.domain.repository.DogRepository
 
 
-//TODO K da sie tak db?
-val dataModule = module {
-    singleOf(::Greeting)
+//TODO K moduł per plik?
+val databaseModule = module {
+    single<AppRoom> {
+        getAppDatabase()
+    }
 }
+val dogModule = module {
+    single<DogDao> {
+        get<AppRoom>().dogDao()
+    }
+
+    single<DogRepository> {
+        get<DogRepositoryImpl>()
+    }
+}
+
+val dataModules = listOf(databaseModule, dogModule)

@@ -5,7 +5,7 @@ import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import pl.kacper.misterski.multiplatform.data.db.AppRoom.Companion.DATABASE_NAME
 import platform.Foundation.NSHomeDirectory
 
-fun getAppDatabase(): AppRoom {
+actual fun getAppDatabase(): AppRoom {
     val dbFile = NSHomeDirectory() + DATABASE_NAME
     return Room.databaseBuilder<AppRoom>(
         name = dbFile,

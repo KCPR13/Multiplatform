@@ -32,6 +32,8 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.koin.android)
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -42,9 +44,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-//            implementation(project(":data:dog")) TODO K cleanup
-//            implementation(project(":domain:dog"))
-//            implementation(project(":feature:dog"))
+            implementation(project(":data"))
+            implementation(project(":domain"))
 
         }
         commonTest.dependencies {
@@ -68,6 +69,10 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    buildFeatures {
+        compose = true
+        buildConfig = true
     }
     buildTypes {
         getByName("release") {

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = DogEntity.Companion.TABLE_NAME)
 data class DogEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val name: String
 ) {
     companion object {
