@@ -8,6 +8,7 @@ import org.koin.core.logger.Level
 import pl.kacper.misterski.multiplatform.BuildConfig
 import pl.kacper.misterski.multiplatform.data.di.dataModules
 import pl.kacper.misterski.multiplatform.domain.di.domainModules
+import pl.kacper.misterski.multiplatform.ui.di.uiModules
 
 class MainApplication : Application() {
     override fun onCreate() {
@@ -17,8 +18,7 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
             modules(
-                *dataModules.toTypedArray(),
-                *domainModules.toTypedArray()
+                dataModules + domainModules + uiModules
             )
         }
     }

@@ -20,7 +20,9 @@ val dogModule = module {
     }
 
     single<DogRepository> {
-        get<DogRepositoryImpl>()
+        DogRepositoryImpl(
+            get<DogDao>()
+        )
     }
 }
 
