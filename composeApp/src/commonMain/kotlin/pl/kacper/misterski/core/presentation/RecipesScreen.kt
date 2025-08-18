@@ -36,18 +36,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import org.koin.compose.KoinContext
 import org.koin.compose.viewmodel.koinViewModel
 import pl.kacper.misterski.core.domain.RecipeInfo
 
 @Composable
 fun RecipesScreen(
-    viewModel: RecipeViewModel = koinViewModel()
 ) {
+    KoinContext {
+        val viewModel = koinViewModel<RecipeViewModel>()
+        val state = viewModel.state
+        RecipeListScreen(state = state)
+    }
 
-    val state = viewModel.state
-
-    RecipeListScreen(state = state)
 }
 
 @Composable
@@ -188,3 +191,4 @@ fun RecipeCard(
         }
     }
 }
+
