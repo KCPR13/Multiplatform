@@ -1,0 +1,10 @@
+package pl.kacper.misterski.multiplatform.ui.di
+
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.module
+import pl.kacper.misterski.multiplatform.ui.dog.DogViewModel
+
+actual val viewModelModule =
+    module {
+        viewModelOf(::DogViewModel)
+    }
