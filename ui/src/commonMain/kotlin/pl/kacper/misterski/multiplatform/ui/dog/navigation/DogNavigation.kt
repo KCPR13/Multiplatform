@@ -2,15 +2,15 @@ package pl.kacper.misterski.multiplatform.ui.dog.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import org.koin.compose.viewmodel.koinViewModel
 import pl.kacper.misterski.multiplatform.ui.dog.DogScreen
+import pl.kacper.misterski.multiplatform.ui.dog.DogUiState
 import pl.kacper.misterski.multiplatform.ui.dog.DogViewModel
 import pl.kacper.misterski.multiplatform.ui.navigation.NavigationItem
+import org.koin.compose.viewmodel.koinViewModel
+
 
 fun NavGraphBuilder.dog(onBackPressed: () -> Unit) {
     composable(NavigationItem.Dog.route) {

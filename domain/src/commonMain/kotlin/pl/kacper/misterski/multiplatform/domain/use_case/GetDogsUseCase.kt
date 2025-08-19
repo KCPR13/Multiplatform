@@ -1,6 +1,7 @@
 package pl.kacper.misterski.multiplatform.domain.use_case
 
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import pl.kacper.misterski.multiplatform.domain.mapper.mapToDomainModels
@@ -10,8 +11,7 @@ import pl.kacper.misterski.multiplatform.domain.util.DomainResult
 
 //TODO K robimy commony też?
 
-class GetDogsUseCase(private val dogRepository: DogRepository,
-                     private val ioDispatcher: CoroutineDispatcher) {
+class GetDogsUseCase(private val dogRepository: DogRepository) {
 
     operator fun invoke() = flow {
         insertDogs()
@@ -23,7 +23,7 @@ class GetDogsUseCase(private val dogRepository: DogRepository,
             emit(DomainResult.Error(Exception("No dogs found")))
         }
 
-    }.flowOn(ioDispatcher)
+    }.flowOn(Dispatchers.IO)
 
 
     private suspend fun insertDogs() {

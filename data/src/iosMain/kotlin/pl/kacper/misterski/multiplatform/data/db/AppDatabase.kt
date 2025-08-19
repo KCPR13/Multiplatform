@@ -8,7 +8,7 @@ import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
-actual fun getAppDatabase(): AppRoom {
+fun getAppDatabase(): AppRoom {
     return getDatabaseBuilder()
         .build()
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,9 +42,6 @@ fun DogScreen(modifier: Modifier, state: DogUiState, onBackPressed: () -> Unit) 
                     }
                 }
             }
-        }
-        FloatingActionButton(onBackPressed) {
-            Text("Back")
         }
     }
 }

@@ -40,7 +40,6 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
-            implementation(libs.koin.compose)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
@@ -49,8 +48,9 @@ kotlin {
             implementation(project(":domain"))
             implementation(project(":ui"))
             implementation(libs.navigation.compose)
-            implementation(libs.koin.core)
+            api(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.lifecycle.viewmodel)
 
 
         }
