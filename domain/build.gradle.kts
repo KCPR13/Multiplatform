@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.androidLint)
+    alias(libs.plugins.ksp)
+
 }
 
 kotlin {
@@ -32,6 +34,12 @@ kotlin {
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
     val xcfName = "domainKit"
+
+    iosX64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
 
     iosArm64 {
         binaries.framework {
@@ -92,5 +100,9 @@ kotlin {
             }
         }
     }
+}
+dependencies {
+    // KSP
+    ksp(libs.androidx.room.compiler)
 
 }

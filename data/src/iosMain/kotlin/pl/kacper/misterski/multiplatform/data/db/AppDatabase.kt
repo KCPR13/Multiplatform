@@ -1,16 +1,33 @@
 package pl.kacper.misterski.multiplatform.data.db
 
 import androidx.room.Room
-import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import androidx.room.RoomDatabase
+import kotlinx.cinterop.ExperimentalForeignApi
 import pl.kacper.misterski.multiplatform.data.db.AppRoom.Companion.DATABASE_NAME
-import platform.Foundation.NSHomeDirectory
+import platform.Foundation.NSDocumentDirectory
+import platform.Foundation.NSFileManager
+import platform.Foundation.NSUserDomainMask
 
 actual fun getAppDatabase(): AppRoom {
-    val dbFile = NSHomeDirectory() + DATABASE_NAME
-    return Room.databaseBuilder<AppRoom>(
-        name = dbFile,
-        factory = { AppRoom::class.instantiateImpl() }
-    )
-        .setDriver(BundledSQLiteDriver())
+    return getDatabaseBuilder()
         .build()
+}
+
+private fun getDatabaseBuilder(): RoomDatabase.Builder<AppRoom> {
+    val dbFilePath = documentDirectory() + DATABASE_NAME
+    return Room.databaseBuilder<AppRoom>(
+        name = dbFilePath,
+    )
+}
+
+@OptIn(ExperimentalForeignApi::class)
+private fun documentDirectory(): String {
+    val documentDirectory = NSFileManager.defaultManager.URLForDirectory(
+        directory = NSDocumentDirectory,
+        inDomain = NSUserDomainMask,
+        appropriateForURL = null,
+        create = false,
+        error = null,
+    )
+    return requireNotNull(documentDirectory?.path)
 }

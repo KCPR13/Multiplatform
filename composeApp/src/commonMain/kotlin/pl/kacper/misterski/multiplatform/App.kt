@@ -15,21 +15,23 @@ import pl.kacper.misterski.multiplatform.ui.start.navigation.start
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
-        val navController = rememberNavController()
+        MaterialTheme {
+            val navController = rememberNavController()
 
-        NavHost(
-            modifier = Modifier.fillMaxSize(),
-            navController = navController,
-            startDestination = NavigationItem.Start.route,
-        ) {
-            start(
-                onDogClick = {
-                    navController.navigate(NavigationItem.Dog.route)
-                }
-            )
+            NavHost(
+                modifier = Modifier.fillMaxSize(),
+                navController = navController,
+                startDestination = NavigationItem.Start.route,
+            ) {
+                start(
+                    onDogClick = {
+                        navController.navigate(NavigationItem.Dog.route)
+                    }
+                )
 
-            dog(onBackPressed = { navController.navigateUp() })
+                dog(onBackPressed = { navController.navigateUp() })
+            }
         }
-    }
+
+
 }

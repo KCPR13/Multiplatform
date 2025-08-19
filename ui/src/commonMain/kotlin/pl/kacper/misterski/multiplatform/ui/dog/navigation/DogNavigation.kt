@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 import pl.kacper.misterski.multiplatform.ui.dog.DogScreen
 import pl.kacper.misterski.multiplatform.ui.dog.DogViewModel
 import pl.kacper.misterski.multiplatform.ui.navigation.NavigationItem
@@ -15,7 +15,7 @@ import pl.kacper.misterski.multiplatform.ui.navigation.NavigationItem
 fun NavGraphBuilder.dog(onBackPressed: () -> Unit) {
     composable(NavigationItem.Dog.route) {
 
-        val viewModel: DogViewModel = koinInject()
+        val viewModel = koinViewModel<DogViewModel>()
         val state by viewModel.uiState.collectAsStateWithLifecycle()
 
         DogScreen(

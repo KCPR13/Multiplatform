@@ -35,6 +35,12 @@ kotlin {
     // https://developer.android.com/kotlin/multiplatform/migrate
     val xcfName = "dataKit"
 
+    iosX64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
+
     iosArm64 {
         binaries.framework {
             baseName = xcfName
@@ -90,6 +96,7 @@ kotlin {
 
         iosMain {
             dependencies {
+                implementation(libs.androidx.sqlite.bundled)
                 // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
                 // Plugin (KGP) that each specific iOS target (e.g., iosX64) depends on as
                 // part of KMP’s default source set hierarchy. Note that this source set depends
