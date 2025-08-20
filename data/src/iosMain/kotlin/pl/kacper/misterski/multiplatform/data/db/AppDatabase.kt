@@ -2,6 +2,7 @@ package pl.kacper.misterski.multiplatform.data.db
 
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.driver.NativeSQLiteDriver
 import kotlinx.cinterop.ExperimentalForeignApi
 import pl.kacper.misterski.multiplatform.data.db.AppRoom.Companion.DATABASE_NAME
 import platform.Foundation.NSDocumentDirectory
@@ -10,6 +11,7 @@ import platform.Foundation.NSUserDomainMask
 
 fun getAppDatabase(): AppRoom {
     return getDatabaseBuilder()
+        .setDriver(NativeSQLiteDriver())
         .build()
 }
 
