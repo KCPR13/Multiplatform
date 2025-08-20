@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.native.coroutines)
 }
 
 kotlin {
@@ -17,10 +18,6 @@ kotlin {
         }
     }
 
-    kotlin.sourceSets.all {
-        languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
-    }
-
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -28,10 +25,16 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            export(project(":ui"))
         }
     }
     
     sourceSets {
+        all {
+            languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+            languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
+            languageSettings.optIn("kotlin.experimental.ExperimentalObjCRefinement")
+        }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -49,13 +52,18 @@ kotlin {
             implementation(libs.koin.core)
             implementation(project(":data"))
             implementation(project(":domain"))
-//            implementation(project(":data:dog")) TODO K cleanup
-//            implementation(project(":domain:dog"))
-//            implementation(project(":feature:dog"))
-
+            implementation(project(":ui"))
+            implementation(libs.kmp.viemodels)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        iosMain.dependencies {
+            // Solution for not exported symbols from other modules:
+            // https://youtrack.jetbrains.com/issue/KT-43094/Unable-to-use-nested-classes-in-iOS-from-a-Kotlin-Native-Multiplatform-library
+            // https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-build-native-binaries.html#export-dependencies-to-binaries
+            api(project(":ui"))
         }
     }
 }

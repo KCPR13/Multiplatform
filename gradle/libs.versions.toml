@@ -22,6 +22,7 @@ ksp = "2.2.0-2.0.2"
 koin-bom = "4.1.0"
 #iOS Support
 native-coroutines = "1.0.0-ALPHA-45"
+kmp-viewmodels = "1.0.0-BETA-12"
 
 
 [libraries]
@@ -48,6 +49,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-sqlite-wrapper = { module = "androidx.room:room-sqlite-wrapper", version.ref = "room" }
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
 koin-core = { module = "io.insert-koin:koin-core" }
+kmp-viemodels = { module = "com.rickclephas.kmp:kmp-observableviewmodel-core", version.ref = "kmp-viewmodels"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
