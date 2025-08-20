@@ -1,4 +1,4 @@
-package pl.kacper.misterski.multiplatform.ui.di
+package pl.kacper.misterski.multiplatform.di
 
 import org.koin.core.module.Module
 

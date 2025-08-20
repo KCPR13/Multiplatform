@@ -9,7 +9,6 @@ import pl.kacper.misterski.multiplatform.BuildConfig
 import pl.kacper.misterski.multiplatform.data.di.dataModules
 import pl.kacper.misterski.multiplatform.data.di.databaseModule
 import pl.kacper.misterski.multiplatform.domain.di.domainModules
-import pl.kacper.misterski.multiplatform.ui.di.viewModelModule
 
 actual class KoinInitializer(private val context: Context) {
 

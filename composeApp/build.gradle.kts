@@ -46,12 +46,15 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(project(":data"))
             implementation(project(":domain"))
-            implementation(project(":ui"))
             implementation(libs.navigation.compose)
             api(libs.koin.core)
-            implementation(libs.koin.compose)
-            implementation(libs.lifecycle.viewmodel)
-
+            api(libs.koin.compose)
+            api(libs.lifecycle.viewmodel)
+            api(compose.runtime)
+            api(compose.foundation)
+            api(compose.material3)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.compose.viewmodel.navigation)
 
         }
         commonTest.dependencies {

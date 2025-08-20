@@ -8,7 +8,6 @@ import pl.kacper.misterski.multiplatform.domain.repository.DogRepository
 
 
 val dogModule = module {
-
     singleOf(::DogRepositoryImpl).bind<DogRepository>()
 }
 

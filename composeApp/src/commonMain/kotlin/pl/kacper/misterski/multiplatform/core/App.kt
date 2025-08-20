@@ -1,4 +1,4 @@
-package pl.kacper.misterski.multiplatform
+package pl.kacper.misterski.multiplatform.core
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
