@@ -2,13 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Aplikacjapotrzebuje uprawnien do kamery.</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Aplikacjapotrzebuje dostepu do bluetooth.</string>
+	<string>App needs bluetooth access to connect to nearby devices.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Aplikacja potrzebuje uprawnien do kamery.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Aplikacja potrzebuje twojej lokalizacji podczaskorzystania z niej.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Aplikacja potrzebuje dostepu do bluetooth.</string>
 </dict>
 </plist>
