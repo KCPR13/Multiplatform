@@ -23,6 +23,8 @@ sqlite = "2.5.2"
 ksp = "2.2.0-2.0.2"
 koin-bom = "4.1.0"
 lifecycleViewModel = "2.9.2"
+moko = "0.20.0"
+
 
 
 
@@ -51,6 +53,11 @@ koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin-bom" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-bom" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko" }
+moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko" }
+moko-permissions-camera = { module = "dev.icerock.moko:permissions-camera", version.ref = "moko" }
+moko-permissions-location = { module = "dev.icerock.moko:permissions-location", version.ref = "moko" }
+moko-permissions-bluetooth = { module = "dev.icerock.moko:permissions-bluetooth", version.ref = "moko" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
