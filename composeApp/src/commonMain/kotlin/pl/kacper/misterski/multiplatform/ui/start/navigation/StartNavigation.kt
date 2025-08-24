@@ -8,12 +8,17 @@ import androidx.navigation.compose.composable
 import pl.kacper.misterski.multiplatform.ui.navigation.NavigationItem
 import pl.kacper.misterski.multiplatform.ui.start.StartScreen
 
-fun NavGraphBuilder.start(onDogClick: () -> Unit) {
+fun NavGraphBuilder.start(
+    onDogClick: () -> Unit,
+    onPermissionClick: () -> Unit
+) {
     composable(NavigationItem.Start.route) {
         StartScreen(
             modifier = Modifier
                 .safeContentPadding()
                 .fillMaxSize(),
-            onDogClick = onDogClick)
+            onDogClick = onDogClick,
+            onPermissionClick = onPermissionClick
+        )
     }
 }

@@ -13,7 +13,7 @@ actual class KoinInitializer(private val config: KoinAppDeclaration? = null) {
     actual fun init(){
         startKoin {
             config?.invoke(this)
-            modules(
+            modules(coreModule +
                 databaseModule +
                 dataModules +
                         domainModules +

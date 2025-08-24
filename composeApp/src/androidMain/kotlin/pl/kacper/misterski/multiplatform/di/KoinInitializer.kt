@@ -17,7 +17,7 @@ actual class KoinInitializer(private val context: Context) {
             androidContext(context)
             androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
             modules(
-                databaseModule + dataModules + domainModules + viewModelModule
+                coreModule + databaseModule + dataModules + domainModules + viewModelModule
             )
         }
     }

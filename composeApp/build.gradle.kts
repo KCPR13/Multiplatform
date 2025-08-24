@@ -55,6 +55,11 @@ kotlin {
             api(compose.material3)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
+            api(libs.moko.permissions)
+            api(libs.moko.permissions.compose)
+            api(libs.moko.permissions.camera)
+            api(libs.moko.permissions.location)
+            api(libs.moko.permissions.bluetooth)
 
         }
         commonTest.dependencies {

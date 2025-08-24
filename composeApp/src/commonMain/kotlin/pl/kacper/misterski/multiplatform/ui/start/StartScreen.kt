@@ -1,21 +1,29 @@
 package pl.kacper.misterski.multiplatform.ui.start
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 //TODO K co z resourcami
 @Composable
-fun StartScreen(modifier: Modifier, onDogClick: () -> Unit) {
+fun StartScreen(modifier: Modifier, onDogClick: () -> Unit,
+                onPermissionClick: () -> Unit) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Button(onClick = onDogClick) {
             Text("Dogs")
+        }
+        Spacer(Modifier.height(16.dp))
+        Button(onClick = onPermissionClick) {
+            Text("Permissions")
         }
     }
 }
