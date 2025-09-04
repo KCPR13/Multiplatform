@@ -13,6 +13,8 @@ import pl.kacper.misterski.multiplatform.ui.permission.PermissionScreenUiModel
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
+
+//TODO link https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
 class PermissionScreenTest {
 
     private val dummyUiState = PermissionScreenUiModel(
