@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -15,8 +16,15 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+        dependencies {
+            androidTestImplementation(libs.androidx.compose.ui.test.junit4.android)
+            debugImplementation(libs.androidx.compose.ui.test.manifest.v190)
+        }
+
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -27,13 +35,13 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
-
+            implementation(libs.androidx.compose.ui.tooling)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -60,10 +68,12 @@ kotlin {
             api(libs.moko.permissions.camera)
             api(libs.moko.permissions.location)
             api(libs.moko.permissions.bluetooth)
-
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
         }
     }
 }
@@ -78,6 +88,8 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
     packaging {
         resources {

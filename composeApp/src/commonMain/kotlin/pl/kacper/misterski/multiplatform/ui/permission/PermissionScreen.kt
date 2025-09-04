@@ -17,17 +17,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.permissions.PermissionState
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import pl.kacper.misterski.multiplatform.ui.core.MyAppTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
 fun PermissionScreen(
     modifier: Modifier,
@@ -38,15 +39,12 @@ fun PermissionScreen(
     onBackPressed: () -> Unit,
     uiState: PermissionScreenUiModel
 ) {
+
     Scaffold(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text("App Permissions") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Color.Black
-                )
+                title = { Text("App Permissions") }
             )
         }
     ) { paddingValues ->
@@ -151,8 +149,29 @@ fun PermissionStatusCard(
                             )
                         }
                     }
-                    }
                 }
             }
         }
     }
+}
+
+
+@Preview
+@Composable
+fun PreviewPermissionScreen() {
+    MyAppTheme {
+        PermissionScreen(
+            modifier = Modifier,
+            requestLocationPermission = {},
+            requestCameraPermission = {},
+            provideBluetoothPermission = {},
+            openAppSettings = {},
+            onBackPressed = {},
+            uiState = PermissionScreenUiModel(
+                locationPermissionStatus = PermissionState.Denied,
+                cameraPermissionStatus = PermissionState.Granted,
+                bluetoothPermissionStatus = PermissionState.NotGranted
+            )
+        )
+    }
+}
