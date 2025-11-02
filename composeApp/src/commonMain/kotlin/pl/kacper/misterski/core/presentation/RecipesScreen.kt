@@ -25,10 +25,11 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -70,8 +71,8 @@ fun RecipesScreen(
         }
 
         ObserveAsEvents(viewModel.event) { event ->
-            when(event){
-                is RecipeEvent.Error ->{
+            when (event) {
+                is RecipeEvent.Error -> {
                     snackbarState.showSnackbar(event.message)
                 }
             }
@@ -90,77 +91,114 @@ fun RecipesScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeListScreen(
-    state: RecipesState,
+    state: RecipeUiState,
     snackbarState: SnackbarHostState,
     onAction: (RecipeAction) -> Unit
 ) {
-    val pullToRefresh = rememberPullToRefreshState()
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarState) }
     ) { paddingValues ->
-        println("Kacpur state.isLoading: ${state.isLoading}, listRecipes empty:${state.listRecipes.isEmpty()}")
-        if (state.listRecipes.isEmpty() && !state.isLoading) {
-            Box(
+
+        if (state.isLoading){
+            LoadingScreen(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Brak przepisów do wyświetlenia.")
-            }
+                    .padding(paddingValues)
+            )
         } else {
-            PullToRefreshBox(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 16.dp)
-                    .padding(paddingValues),
-                state = pullToRefresh,
-                isRefreshing = state.isLoading,
-                onRefresh = {
-                    onAction.invoke(
-                        RecipeAction.RefreshData
-                    )
-                }
-            ) {
-                Column(
-                    Modifier
+            if(!state.isRefreshing && state.filteredRecipes.isEmpty()) {
+                EmptyScreen(
+                    modifier = Modifier
                         .fillMaxSize()
-                ) {
-
-                    LazyRow {
-                        items(state.filters) { item ->
-                            LetterCircle(item = item, onItemClick = {
-                                onAction.invoke(RecipeAction.FilterItems(it))
-                            })
-                        }
-                    }
-
-
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        items(
-                            items = state.listRecipes,
-                            key = { recipe -> recipe.recipeId }
-                        ) { recipe ->
-                            RecipeCard(
-                                recipe = recipe
-                            )
-                        }
-                    }
-                }
-
+                        .padding(paddingValues)
+                )
+            } else {
+                SuccessScreen(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 16.dp)
+                        .padding(paddingValues),
+                    data = state,
+                    onAction = onAction
+                )
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SuccessScreen(
+    modifier: Modifier,
+    data: RecipeUiState,
+    onAction: (RecipeAction) -> Unit
+) {
+    val pullToRefresh = rememberPullToRefreshState()
+
+    PullToRefreshBox(
+        modifier = modifier,
+        state = pullToRefresh,
+        isRefreshing = data.isRefreshing,
+        onRefresh = {
+            onAction.invoke(
+                RecipeAction.RefreshData
+            )
+        }
+    ) {
+        Column(
+            Modifier
+                .fillMaxSize()
+        ) {
+
+            LazyRow {
+                items(data.filters) { item ->
+                    LetterCircle(item = item, onItemClick = {
+                        onAction.invoke(RecipeAction.FilterItems(it))
+                    })
+                }
+            }
+
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(
+                    items = data.filteredRecipes,
+                    key = { recipe -> recipe.recipeId }
+                ) { recipe ->
+                    RecipeCard(
+                        recipe = recipe
+                    )
+                }
+            }
+        }
+
+    }
+}
 
 @Composable
-fun LetterCircle(
+private fun LoadingScreen(modifier: Modifier) {
+    Box(modifier) {
+        CircularProgressIndicator(Modifier.size(100.dp).align(Alignment.Center))
+    }
+}
+
+@Composable
+private fun EmptyScreen(modifier: Modifier) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        Text("Brak przepisów do wyświetlenia.")
+    }
+}
+
+
+@Composable
+private fun LetterCircle(
     item: FilterItem,
     modifier: Modifier = Modifier,
     onItemClick: (Char) -> Unit
