@@ -17,7 +17,7 @@ class RecipeViewModel(
     private val getRecipesUseCase: GetRecipesUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(RecipeUiState())
+    private val _uiState = MutableStateFlow<RecipeUiState>(RecipeUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     private val _event = Channel<RecipeEvent>()
@@ -28,44 +28,42 @@ class RecipeViewModel(
     }
 
     private fun fetchData(isInitialLoad: Boolean = false, isRefreshing: Boolean = false) {
-        _uiState.update {
-            it.copy(
-                isLoading = isInitialLoad,
-                isRefreshing = isRefreshing
-            )
+        if (isInitialLoad) {
+            _uiState.update { RecipeUiState.Loading }
+        }
+
+        if (isRefreshing) {
+            val currentState = _uiState.value
+            if (currentState is RecipeUiState.Success) {
+                _uiState.update { currentState.copy(isRefreshing = true) }
+            }
         }
 
         getRecipesUseCase().onEach { result ->
             when (result) {
                 is DomainResult.Success -> {
+                    val currentState = _uiState.value
+                    val currentFilters = if (currentState is RecipeUiState.Success) {
+                        currentState.filters
+                    } else {
+                        ('A'..'Z').map { FilterItem(letter = it, selected = true) }
+                    }
+
                     _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            isRefreshing = false,
-                            recipes = result.data.recipes
+                        RecipeUiState.Success(
+                            recipes = result.data.recipes,
+                            filters = currentFilters,
+                            isRefreshing = false
                         )
                     }
                 }
-
                 is DomainResult.Error -> {
                     val errorMessage = result.error.message ?: "Unknown error"
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            isRefreshing = false,
-                        )
-                    }
                     _event.send(RecipeEvent.Error(errorMessage))
                 }
             }
         }.catch { throwable ->
             val errorMessage = throwable.message ?: "Unknown error"
-            _uiState.update {
-                it.copy( // TODO jak zrobie copy i mialem itemki to pokaże stare z errorem, trzeba by czyscic state
-                    isLoading = false,
-                    isRefreshing = false,
-                )
-            }
             _event.send(RecipeEvent.Error(errorMessage))
         }.launchIn(viewModelScope)
     }
@@ -73,7 +71,8 @@ class RecipeViewModel(
     fun onAction(action: RecipeAction) {
         when (action) {
             is RecipeAction.FilterItems -> {
-                _uiState.update { currentState ->
+                val currentState = _uiState.value
+                if (currentState is RecipeUiState.Success) {
                     val newFilters = currentState.filters.map { filterItem ->
                         if (filterItem.letter == action.newFilter) {
                             filterItem.copy(selected = !filterItem.selected)
@@ -81,10 +80,9 @@ class RecipeViewModel(
                             filterItem
                         }
                     }
-                    currentState.copy(filters = newFilters)
+                    _uiState.value = currentState.copy(filters = newFilters)
                 }
             }
-
             is RecipeAction.RefreshData -> {
                 fetchData(isRefreshing = true)
             }

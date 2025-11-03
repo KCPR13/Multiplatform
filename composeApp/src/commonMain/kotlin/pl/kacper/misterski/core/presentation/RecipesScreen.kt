@@ -1,7 +1,5 @@
 package pl.kacper.misterski.core.presentation
 
-// import coil.compose.AsyncImage // Starszy import dla Coila MP 2.x
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -59,16 +57,13 @@ import org.koin.compose.KoinContext
 import org.koin.compose.viewmodel.koinViewModel
 import pl.kacper.misterski.core.domain.RecipeInfo
 
+
 @Composable
-fun RecipesScreen(
-) {
+fun RecipesScreen() {
     KoinContext {
         val viewModel = koinViewModel<RecipeViewModel>()
         val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-        val snackbarState = remember {
-            SnackbarHostState()
-        }
+        val snackbarState = remember { SnackbarHostState() }
 
         ObserveAsEvents(viewModel.event) { event ->
             when (event) {
@@ -78,17 +73,14 @@ fun RecipesScreen(
             }
         }
 
-
         RecipeListScreen(
             state = state,
             snackbarState = snackbarState,
             onAction = viewModel::onAction
         )
     }
-
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeListScreen(
     state: RecipeUiState,
@@ -98,30 +90,21 @@ fun RecipeListScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarState) }
     ) { paddingValues ->
-
-        if (state.isLoading){
-            LoadingScreen(
+        when (state) {
+            is RecipeUiState.Loading -> LoadingScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
             )
-        } else {
-            if(!state.isRefreshing && state.filteredRecipes.isEmpty()) {
-                EmptyScreen(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                )
-            } else {
-                SuccessScreen(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 16.dp)
-                        .padding(paddingValues),
-                    data = state,
-                    onAction = onAction
-                )
-            }
+
+            is RecipeUiState.Success -> SuccessScreen(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 16.dp)
+                    .padding(paddingValues),
+                data = state,
+                onAction = onAction
+            )
         }
     }
 }
@@ -130,7 +113,7 @@ fun RecipeListScreen(
 @Composable
 private fun SuccessScreen(
     modifier: Modifier,
-    data: RecipeUiState,
+    data: RecipeUiState.Success,
     onAction: (RecipeAction) -> Unit
 ) {
     val pullToRefresh = rememberPullToRefreshState()
@@ -139,55 +122,48 @@ private fun SuccessScreen(
         modifier = modifier,
         state = pullToRefresh,
         isRefreshing = data.isRefreshing,
-        onRefresh = {
-            onAction.invoke(
-                RecipeAction.RefreshData
-            )
-        }
+        onRefresh = { onAction(RecipeAction.RefreshData) }
     ) {
-        Column(
-            Modifier
-                .fillMaxSize()
-        ) {
-
-            LazyRow {
-                items(data.filters) { item ->
-                    LetterCircle(item = item, onItemClick = {
-                        onAction.invoke(RecipeAction.FilterItems(it))
-                    })
-                }
-            }
-
-
-            LazyColumn(
+        if (!data.isRefreshing && data.filteredRecipes.isEmpty()) {
+            EmptyScreen(
                 modifier = Modifier
-                    .fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(
-                    items = data.filteredRecipes,
-                    key = { recipe -> recipe.recipeId }
-                ) { recipe ->
-                    RecipeCard(
-                        recipe = recipe
-                    )
+                    .fillMaxSize()
+            )
+        } else {
+            Column(Modifier.fillMaxSize()) {
+                LazyRow {
+                    items(data.filters) { item ->
+                        LetterCircle(item = item, onItemClick = {
+                            onAction(RecipeAction.FilterItems(it))
+                        })
+                    }
+                }
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(
+                        items = data.filteredRecipes,
+                        key = { recipe -> recipe.recipeId }
+                    ) { recipe ->
+                        RecipeCard(recipe = recipe)
+                    }
                 }
             }
         }
-
     }
 }
 
 @Composable
-private fun LoadingScreen(modifier: Modifier) {
+private fun LoadingScreen(modifier: Modifier = Modifier) {
     Box(modifier) {
         CircularProgressIndicator(Modifier.size(100.dp).align(Alignment.Center))
     }
 }
 
 @Composable
-private fun EmptyScreen(modifier: Modifier) {
+private fun EmptyScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
@@ -327,4 +303,3 @@ fun <T> ObserveAsEvents(
         }
     }
 }
-
