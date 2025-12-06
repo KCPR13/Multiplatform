@@ -1,0 +1,10 @@
+package pl.kacper.misterski.adaptive.back
+
+import androidx.compose.runtime.Composable
+import androidx.activity.compose.BackHandler as AndroidBackHandler
+
+@Composable
+actual fun BackHandler(enabled: Boolean, onBack: () -> Unit) {
+    // We use the real BackHandler available on Android.
+    AndroidBackHandler(enabled = enabled, onBack = onBack)
+}
