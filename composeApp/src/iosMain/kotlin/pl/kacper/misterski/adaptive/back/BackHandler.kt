@@ -1,4 +1,4 @@
-package pl.kacper.misterski.back
+package pl.kacper.misterski.adaptive.back
 
 import androidx.compose.runtime.Composable
 import androidx.activity.compose.BackHandler as AndroidBackHandler

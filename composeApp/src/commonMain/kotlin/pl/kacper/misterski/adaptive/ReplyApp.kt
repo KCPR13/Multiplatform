@@ -28,7 +28,6 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowSize
 import androidx.compose.material3.adaptive.layout.AnimatedPane
-import androidx.compose.material3.adaptive.layout.LevitatedPaneScrimDefaults.Color
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
@@ -46,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.reply.data.Email
 import kotlinx.coroutines.launch
 import pl.kacper.misterski.adaptive.back.BackHandler
@@ -54,10 +54,10 @@ import pl.kacper.misterski.adaptive.back.BackHandler
 private val WINDOW_WIDTH_LARGE = 1200.dp
 
 @Composable
-fun ReplyApp(
-    replyHomeUIState: ReplyHomeUIState,
-    onEmailClick: (Email) -> Unit,
-) {
+fun ReplyApp() {
+    val viewModel = ReplyHomeViewModel()
+    val replyHomeUIState by viewModel.uiState.collectAsStateWithLifecycle()
+
     ReplyNavigationWrapperUI {
         val adaptiveInfo = currentWindowAdaptiveInfo()
         val sizeClassText =
@@ -75,7 +75,7 @@ fun ReplyApp(
 
             ReplyAppContent(
                 replyHomeUIState = replyHomeUIState,
-                onEmailClick = onEmailClick
+                onEmailClick = viewModel::setSelectedEmail
             )
         }
 
